@@ -1,4 +1,7 @@
+import 'package:expressmart/secrets.dart';
 import 'package:flutter/material.dart';
+
+String uri = ipadd;
 
 class GlobalVariables {
   // COLORS
