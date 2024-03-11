@@ -152,7 +152,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     CustomButton(
                         text: 'Log in',
                         onTap: () {
-                          print('Reached');
+                          // print('Reached');
                           if (_signInFormKey.currentState!.validate()) {
                             onLogin();
                           }

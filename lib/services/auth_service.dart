@@ -55,8 +55,8 @@ class AuthService {
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
           });
-      // print('Reeached');
-      print(res.body);
+      //
+      // print(res.body);
       // ignore: use_build_context_synchronously
       httpErrorHandler(
           res: res,
@@ -69,6 +69,39 @@ class AuthService {
             Navigator.pushNamedAndRemoveUntil(
                 context, HomeScreen.routeName, (route) => false);
           });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void getUserData(BuildContext context) async {
+    try {
+      // print('Reeached');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('x-auth-token');
+      if (token == null) {
+        prefs.setString('x-auth-token', '');
+      }
+      // print('Reeached token is $token');
+      http.Response tokenRes = await http.post(Uri.parse('$uri/isValidToken'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': token!
+          });
+      // print('Reeached1');
+      var response = jsonDecode(tokenRes.body);
+      print(response.toString());
+      if (response == true) {
+        http.Response res = await http.get(Uri.parse('$uri/'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'x-auth-token': token
+            });
+        // print('Reeached');
+        var userProvider = Provider.of<UserProvider>(context, listen: false);
+        userProvider.setUser(res.body);
+        // print(userProvider.user.token);
+      }
     } catch (e) {
       showSnackBar(context, e.toString());
     }
