@@ -1,4 +1,5 @@
 import 'package:expressmart/features/auth/screens/auth_screen.dart';
+import 'package:expressmart/features/customer/screens/customerScreen.dart';
 import 'package:expressmart/features/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case HomeScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const HomeScreen());
+
+    case CustomerScreen.routeName:
+      return MaterialPageRoute(
+          settings: routeSettings, builder: (_) => const CustomerScreen());
 
     default:
       return MaterialPageRoute(

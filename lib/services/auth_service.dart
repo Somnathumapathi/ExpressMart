@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:expressmart/constants/error_handler.dart';
 import 'package:expressmart/constants/global_variables.dart';
 import 'package:expressmart/constants/utils.dart';
+import 'package:expressmart/features/customer/screens/customerScreen.dart';
 import 'package:expressmart/features/home/screens/home_screen.dart';
 import 'package:expressmart/models/user.dart';
 import 'package:expressmart/provider/user_provider.dart';
@@ -67,7 +68,7 @@ class AuthService {
             await pref.setString('x-auth-token', jsonDecode(res.body)['token']);
             // ignore: use_build_context_synchronously
             Navigator.pushNamedAndRemoveUntil(
-                context, HomeScreen.routeName, (route) => false);
+                context, CustomerScreen.routeName, (route) => false);
           });
     } catch (e) {
       showSnackBar(context, e.toString());
