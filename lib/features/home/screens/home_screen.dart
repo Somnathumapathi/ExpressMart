@@ -1,5 +1,7 @@
 import 'package:expressmart/features/home/widgets/addressbox.dart';
+import 'package:expressmart/features/home/widgets/carouselslider.dart';
 import 'package:expressmart/features/home/widgets/categoryOptions.dart';
+import 'package:expressmart/features/home/widgets/todaysdeal.dart';
 import 'package:expressmart/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +57,15 @@ class _HomeScreenState extends State<HomeScreen> {
         body:
             // Center(child: Text(user.toJson())),
             Column(
-          children: [AddressBox(), CategoryOptions()],
+          children: [
+            AddressBox(),
+            SizedBox(
+              height: 10,
+            ),
+            CategoryOptions(),
+            CarouselWidget(),
+            TodaysDeal()
+          ],
         ));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:expressmart/constants/global_variables.dart';
+import 'package:expressmart/features/admin/screens/admin_screen.dart';
 import 'package:expressmart/features/auth/screens/auth_screen.dart';
 import 'package:expressmart/features/customer/screens/customerScreen.dart';
 import 'package:expressmart/features/home/screens/home_screen.dart';
@@ -41,7 +42,9 @@ class _MyAppState extends State<MyApp> {
             appBarTheme: const AppBarTheme()),
         onGenerateRoute: (settings) => generateRoute(settings),
         home: Provider.of<UserProvider>(context).user.token.isNotEmpty
-            ? const CustomerScreen()
+            ? Provider.of<UserProvider>(context).user.type == 'user'
+                ? const CustomerScreen()
+                : const AdminScreen()
             : const AuthScreen());
   }
 }

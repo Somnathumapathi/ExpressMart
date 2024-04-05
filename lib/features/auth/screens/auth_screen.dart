@@ -4,6 +4,8 @@ import 'package:expressmart/constants/global_variables.dart';
 import 'package:expressmart/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
+// import '../../../common/widgets/customTextField1.dart';
+
 enum Auth { signin, signup }
 
 class AuthScreen extends StatefulWidget {

@@ -1,3 +1,4 @@
+import 'package:expressmart/features/admin/screens/add_products_screen.dart';
 import 'package:expressmart/features/auth/screens/auth_screen.dart';
 import 'package:expressmart/features/customer/screens/customerScreen.dart';
 import 'package:expressmart/features/home/screens/home_screen.dart';
@@ -16,6 +17,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case CustomerScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const CustomerScreen());
+
+    case AddProductsScreen.routeName:
+      return MaterialPageRoute(
+          settings: routeSettings, builder: (_) => const AddProductsScreen());
 
     default:
       return MaterialPageRoute(
