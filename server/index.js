@@ -5,8 +5,8 @@ const PORT = 3000
 const app = express()
 const authRouter = require('./routes/auth')
 const adminRouter = require('./routes/admin')
-const DB = 'mongodb+srv://somnath:<password>@cluster0.9kphc5o.mongodb.net/?retryWrites=true&w=majority'
-
+require('dotenv').config(); 
+const DB = process.env.MONGODB_URI;
 app.use(express.json())
 app.use(authRouter);
 app.use(adminRouter)

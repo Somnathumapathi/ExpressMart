@@ -25,4 +25,16 @@ res.json(products)
     }
 })
 
+adminRouter.delete('/admin/delete-product', admin, async (req, res) => {
+    try {
+        const {id} = req.body
+        // console.log(id)
+        let product = await Product.findByIdAndDelete(id)
+        // console.log('Product deleted')
+        res.json(product)
+    } catch (e) {
+        return res.status(500).json({error: e.message})
+    }
+})
+
 module.exports = adminRouter

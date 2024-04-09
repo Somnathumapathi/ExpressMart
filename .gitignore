@@ -4,6 +4,8 @@ server/node_modules
 #secrets
 secrets.dart
 
+.env
+
 # Miscellaneous
 *.class
 *.log

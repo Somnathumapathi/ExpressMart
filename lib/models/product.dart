@@ -8,7 +8,7 @@ class Product {
   final double quantity;
   final List<String> imageUrls;
   final String category;
-  final String? productId;
+  final String? id;
   final String? userId;
 
   Product(
@@ -18,7 +18,7 @@ class Product {
       required this.quantity,
       required this.imageUrls,
       required this.category,
-      this.productId,
+      this.id,
       this.userId});
 
   Map<String, dynamic> toMap() {
@@ -29,7 +29,7 @@ class Product {
       'quantity': quantity,
       'imageUrls': imageUrls,
       'category': category,
-      'productId': productId,
+      'id': id,
       'userId': userId,
     };
   }
@@ -42,7 +42,7 @@ class Product {
       quantity: map['quantity']?.toDouble() ?? 0.0,
       imageUrls: List<String>.from((map['imageUrls'])),
       category: map['category'] as String,
-      productId: map['productId'] != null ? map['productId'] as String : null,
+      id: map['_id'],
       userId: map['userId'] != null ? map['userId'] as String : null,
     );
   }
