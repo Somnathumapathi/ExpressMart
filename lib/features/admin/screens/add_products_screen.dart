@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expressmart/common/widgets/customButton.dart';
-import 'package:expressmart/common/widgets/customTextField.dart';
+// import 'package:expressmart/common/widgets/customTextField.dart';
 import 'package:expressmart/constants/utils.dart';
+import 'package:expressmart/services/admin_services.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/widgets/customTextField1.dart';
@@ -17,6 +18,8 @@ class AddProductsScreen extends StatefulWidget {
 }
 
 class _AddProductsScreenState extends State<AddProductsScreen> {
+  final adminServices = AdminServices();
+
   List<File> _images = [];
   void _pickImages() async {
     var res = await pickImage();
@@ -30,6 +33,20 @@ class _AddProductsScreenState extends State<AddProductsScreen> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
+  final _addProductKey = GlobalKey<FormState>();
+  void onSellProduct() {
+    if (_addProductKey.currentState!.validate() && _images.isNotEmpty) {
+      adminServices.sellProduct(
+          context: context,
+          productName: productNameController.text,
+          description: descriptionController.text,
+          price: double.parse(priceController.text),
+          quantity: double.parse(quantityController.text),
+          category: _category,
+          images: _images);
+    }
+  }
+
   @override
   void dispose() {
     productNameController.dispose();
@@ -51,6 +68,7 @@ class _AddProductsScreenState extends State<AddProductsScreen> {
       ),
       body: SingleChildScrollView(
         child: Form(
+          key: _addProductKey,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -153,7 +171,7 @@ class _AddProductsScreenState extends State<AddProductsScreen> {
                 ),
                 CustomButton(
                   text: 'Sell',
-                  onTap: () {},
+                  onTap: onSellProduct,
                   color: GlobalVariables.secondaryColor,
                 )
               ],

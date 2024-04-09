@@ -38,9 +38,9 @@ class Product {
     return Product(
       productName: map['productName'] as String,
       description: map['description'] as String,
-      price: map['price'] as double,
-      quantity: map['quantity'] as double,
-      imageUrls: List<String>.from((map['imageUrls'] as List<String>)),
+      price: map['price']?.toDouble() ?? 0.0,
+      quantity: map['quantity']?.toDouble() ?? 0.0,
+      imageUrls: List<String>.from((map['imageUrls'])),
       category: map['category'] as String,
       productId: map['productId'] != null ? map['productId'] as String : null,
       userId: map['userId'] != null ? map['userId'] as String : null,

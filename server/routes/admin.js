@@ -15,4 +15,14 @@ res.json(product)
         return res.status(500).json({error: e.message})
     }
 })
+
+adminRouter.get('/admin/get-products', admin, async (req, res) => {
+    try {
+const products = await Product.find({})
+res.json(products)
+    } catch (e) {
+        return res.status(500).json({error: e.message})
+    }
+})
+
 module.exports = adminRouter
