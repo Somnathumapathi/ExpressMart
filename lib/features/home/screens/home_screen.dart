@@ -3,6 +3,7 @@ import 'package:expressmart/features/home/widgets/carouselslider.dart';
 import 'package:expressmart/features/home/widgets/categoryOptions.dart';
 import 'package:expressmart/features/home/widgets/todaysdeal.dart';
 import 'package:expressmart/provider/user_provider.dart';
+import 'package:expressmart/services/home_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _searchController = TextEditingController();
+  final homeservices = HomeServices();
+  List<String> searchSuggestions = [];
+  _fetchSearchSuggestions(String ch) async {
+    searchSuggestions = await homeservices.fetchSearchResults(context, ch);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
@@ -38,6 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         elevation: 1,
                         borderRadius: BorderRadius.circular(7),
                         child: TextFormField(
+                          onChanged: (value) {
+                            _fetchSearchSuggestions(value);
+                          },
+                          controller: _searchController,
                           decoration: InputDecoration(
                             hintText: 'Search products',
                             fillColor: const Color.fromARGB(60, 14, 0, 0),
@@ -54,20 +67,38 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        body:
-            // Center(child: Text(user.toJson())),
-            SingleChildScrollView(
-          child: Column(
-            children: [
-              AddressBox(),
-              SizedBox(
-                height: 10,
-              ),
-              CategoryOptions(),
-              CarouselWidget(),
-              TodaysDeal()
-            ],
-          ),
+        body: SingleChildScrollView(
+          child: searchSuggestions.isNotEmpty &&
+                  _searchController.text.isNotEmpty
+              ? Container(
+                  height: 250,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: searchSuggestions.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(searchSuggestions[index]),
+                          trailing: IconButton(
+                            icon: Icon(Icons.arrow_outward),
+                            onPressed: () {
+                              _searchController.text = searchSuggestions[index];
+                              _fetchSearchSuggestions(_searchController.text);
+                            },
+                          ),
+                        );
+                      }),
+                )
+              : Column(
+                  children: [
+                    AddressBox(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CategoryOptions(),
+                    CarouselWidget(),
+                    TodaysDeal()
+                  ],
+                ),
         ));
   }
 }

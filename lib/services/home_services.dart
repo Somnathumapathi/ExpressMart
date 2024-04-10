@@ -34,4 +34,32 @@ class HomeServices {
     }
     return productList;
   }
+
+  Future<List<String>> fetchSearchResults(
+      BuildContext context, String ch) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<String> productNames = [];
+    try {
+      http.Response res = await http
+          .get(Uri.parse('$uri/api/search-suggestions?ch=$ch'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token
+      });
+      httpErrorHandler(
+          res: res,
+          context: context,
+          onSuccess: () {
+            List<dynamic> resData = jsonDecode(res.body);
+
+            for (int i = 0; i < resData.length; i++) {
+              String productName = resData[i]['productName'];
+              productNames.add(productName);
+              // print(productNames);
+            }
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return productNames;
+  }
 }

@@ -13,4 +13,13 @@ productRouter.get('/api/products', auth, async (req, res) => {
     }
 })
 
+productRouter.get('/api/search-suggestions', auth, async(req, res) => {
+    try {
+        const products = await Product.find({productName: {$regex: `^${req.query.ch}`}}).select('productName')
+        res.json(products)
+    } catch (e) {
+        res.status(500).json({error: e.message})
+    }
+})
+
 module.exports = productRouter
