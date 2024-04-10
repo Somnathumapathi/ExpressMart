@@ -22,7 +22,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     products =
         await homeServices.fetchCategoryProducts(context, widget.category);
     setState(() {});
-    await homeServices.fetchSearchResults(context, 't');
   }
 
   @override
