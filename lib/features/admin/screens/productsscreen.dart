@@ -83,7 +83,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   onPressed: () {
                                     delProduct(productData, index);
                                   },
-                                  icon: Icon(Icons.delete))
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ))
                             ],
                           )
                         ],

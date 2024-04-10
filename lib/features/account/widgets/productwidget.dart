@@ -21,10 +21,10 @@ class ProductWidget extends StatelessWidget {
         ),
         child: Container(
           width: 180,
-          padding: const EdgeInsets.all(10),
+          // padding: const EdgeInsets.all(10),
           child: Image.network(
             imgUrl,
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.cover,
             width: 180,
           ),
         ),

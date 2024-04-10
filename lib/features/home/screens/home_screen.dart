@@ -56,16 +56,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body:
             // Center(child: Text(user.toJson())),
-            Column(
-          children: [
-            AddressBox(),
-            SizedBox(
-              height: 10,
-            ),
-            CategoryOptions(),
-            CarouselWidget(),
-            TodaysDeal()
-          ],
+            SingleChildScrollView(
+          child: Column(
+            children: [
+              AddressBox(),
+              SizedBox(
+                height: 10,
+              ),
+              CategoryOptions(),
+              CarouselWidget(),
+              TodaysDeal()
+            ],
+          ),
         ));
   }
 }

@@ -44,13 +44,18 @@ class _OrdersState extends State<Orders> {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 1,
-            crossAxisSpacing: 8,
+            crossAxisSpacing: 0,
           ),
           itemCount: list.length,
           itemBuilder: ((context, index) {
             String primg = list[index]['image']!;
             String prName = list[index]['name']!;
-            return ProductWidget(imgUrl: primg, prName: prName);
+            return Column(
+              children: [
+                ProductWidget(imgUrl: primg, prName: prName),
+                Text(prName)
+              ],
+            );
           }),
           shrinkWrap: true,
         )

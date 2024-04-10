@@ -17,7 +17,7 @@ class OptionButton extends StatelessWidget {
                   Border.all(width: 1, color: GlobalVariables.secondaryColor),
               color: Color.fromARGB(255, 79, 78, 78)),
           height: 50,
-          width: 175,
+          width: 160,
           child: Center(
               child: Text(
             text,

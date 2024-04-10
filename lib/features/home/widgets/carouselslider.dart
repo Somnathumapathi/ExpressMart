@@ -16,6 +16,10 @@ class CarouselWidget extends StatelessWidget {
                     height: 200,
                   ));
         }).toList(),
-        options: CarouselOptions(viewportFraction: 1, height: 200));
+        options: CarouselOptions(
+            viewportFraction: 1,
+            height: 200,
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 5)));
   }
 }

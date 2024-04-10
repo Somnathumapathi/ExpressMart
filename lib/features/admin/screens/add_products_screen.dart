@@ -105,9 +105,10 @@ class _AddProductsScreenState extends State<AddProductsScreen> {
                                   ));
                         }).toList(),
                         options: CarouselOptions(
-                          viewportFraction: 1,
-                          height: 200,
-                        ),
+                            viewportFraction: 1,
+                            height: 200,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 5)),
                       ),
                 const SizedBox(
                   height: 15,

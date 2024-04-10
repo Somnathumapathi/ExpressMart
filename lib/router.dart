@@ -1,7 +1,9 @@
 import 'package:expressmart/features/admin/screens/add_products_screen.dart';
 import 'package:expressmart/features/auth/screens/auth_screen.dart';
 import 'package:expressmart/features/customer/screens/customerScreen.dart';
+import 'package:expressmart/features/home/screens/category_screen.dart';
 import 'package:expressmart/features/home/screens/home_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -21,6 +23,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case AddProductsScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const AddProductsScreen());
+
+    case CategoryScreen.routeName:
+      var category = routeSettings.arguments as String;
+      return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => CategoryScreen(category: category));
 
     default:
       return MaterialPageRoute(
