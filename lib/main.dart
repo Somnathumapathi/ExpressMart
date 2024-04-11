@@ -2,7 +2,6 @@ import 'package:expressmart/constants/global_variables.dart';
 import 'package:expressmart/features/admin/screens/admin_screen.dart';
 import 'package:expressmart/features/auth/screens/auth_screen.dart';
 import 'package:expressmart/features/customer/screens/customerScreen.dart';
-import 'package:expressmart/features/home/screens/home_screen.dart';
 import 'package:expressmart/provider/user_provider.dart';
 import 'package:expressmart/router.dart';
 import 'package:expressmart/services/auth_service.dart';

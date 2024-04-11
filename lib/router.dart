@@ -3,6 +3,7 @@ import 'package:expressmart/features/auth/screens/auth_screen.dart';
 import 'package:expressmart/features/customer/screens/customerScreen.dart';
 import 'package:expressmart/features/home/screens/category_screen.dart';
 import 'package:expressmart/features/home/screens/home_screen.dart';
+import 'package:expressmart/features/home/screens/search_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: routeSettings,
           builder: (_) => CategoryScreen(category: category));
+
+    case SearchScreen.routeName:
+      var query = routeSettings.arguments as String;
+      return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => SearchScreen(searchQuery: query));
 
     default:
       return MaterialPageRoute(

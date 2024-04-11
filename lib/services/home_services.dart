@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import '../provider/user_provider.dart';
+
 class HomeServices {
   Future<List<Product>> fetchCategoryProducts(
       BuildContext context, String category) async {
@@ -35,7 +37,7 @@ class HomeServices {
     return productList;
   }
 
-  Future<List<String>> fetchSearchResults(
+  Future<List<String>> fetchSearchSuggestions(
       BuildContext context, String ch) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<String> productNames = [];
@@ -61,5 +63,30 @@ class HomeServices {
       showSnackBar(context, e.toString());
     }
     return productNames;
+  }
+
+  Future<List<Product>> fetchSearchResults(
+      BuildContext context, String query) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<Product> productList = [];
+    try {
+      http.Response res =
+          await http.get(Uri.parse('$uri/api/search/$query'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token
+      });
+      httpErrorHandler(
+          res: res,
+          context: context,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              productList
+                  .add(Product.fromJson(jsonEncode(jsonDecode(res.body)[i])));
+            }
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return productList;
   }
 }

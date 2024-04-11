@@ -1,3 +1,4 @@
+import 'package:expressmart/features/home/screens/search_screen.dart';
 import 'package:expressmart/features/home/widgets/addressbox.dart';
 import 'package:expressmart/features/home/widgets/carouselslider.dart';
 import 'package:expressmart/features/home/widgets/categoryOptions.dart';
@@ -21,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final homeservices = HomeServices();
   List<String> searchSuggestions = [];
   _fetchSearchSuggestions(String ch) async {
-    searchSuggestions = await homeservices.fetchSearchResults(context, ch);
+    searchSuggestions = await homeservices.fetchSearchSuggestions(context, ch);
     setState(() {});
   }
 
@@ -57,7 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             filled: true,
                             suffixIcon: InkWell(
                               child: Icon(Icons.search),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, SearchScreen.routeName,
+                                    arguments: _searchController.text);
+                              },
                             ),
                           ),
                         ),
