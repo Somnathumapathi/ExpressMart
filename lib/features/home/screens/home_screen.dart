@@ -82,7 +82,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: searchSuggestions.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          title: Text(searchSuggestions[index]),
+                          title: InkWell(
+                            child: Text(searchSuggestions[index]),
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, SearchScreen.routeName,
+                                  arguments: searchSuggestions[index]);
+                            },
+                          ),
                           trailing: IconButton(
                             icon: Icon(Icons.arrow_outward),
                             onPressed: () {

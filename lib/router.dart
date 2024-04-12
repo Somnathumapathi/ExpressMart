@@ -4,6 +4,8 @@ import 'package:expressmart/features/customer/screens/customerScreen.dart';
 import 'package:expressmart/features/home/screens/category_screen.dart';
 import 'package:expressmart/features/home/screens/home_screen.dart';
 import 'package:expressmart/features/home/screens/search_screen.dart';
+import 'package:expressmart/features/product-details/screens/productDetails_screen.dart';
+import 'package:expressmart/models/product.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +38,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: routeSettings,
           builder: (_) => SearchScreen(searchQuery: query));
+
+    case ProductDetailsScreen.routeName:
+      var product = routeSettings.arguments as Product;
+      return MaterialPageRoute(
+          builder: (_) => ProductDetailsScreen(product: product));
 
     default:
       return MaterialPageRoute(
