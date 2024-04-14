@@ -94,7 +94,7 @@ class AuthService {
       var response = jsonDecode(tokenRes.body);
       print(response.toString());
       if (response == true) {
-        http.Response res = await http.get(Uri.parse('$uri/'),
+        http.Response res = await http.get(Uri.parse('$uri/get-user'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'x-auth-token': token

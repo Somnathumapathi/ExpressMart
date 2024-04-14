@@ -1,7 +1,6 @@
-import 'package:expressmart/secrets.dart';
 import 'package:flutter/material.dart';
 
-String uri = ipadd;
+String uri = 'https://express-mart-backend.vercel.app';
 
 class GlobalVariables {
   // COLORS
