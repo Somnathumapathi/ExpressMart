@@ -61,6 +61,15 @@ class _SearchScreenState extends State<SearchScreen> {
                     mainAxisSpacing: 10),
                 itemBuilder: (context, index) {
                   final productData = products![index];
+                  double totalRating = 0;
+                  for (int i = 0; i < productData.ratings!.length; i++) {
+                    totalRating += productData.ratings![i].rating;
+                  }
+                  double avgRating = 0;
+                  if (totalRating != 0) {
+                    avgRating = totalRating / productData.ratings!.length;
+                  }
+
                   // return Container(
                   //   child: Column(children: [
                   //     SizedBox(
@@ -109,7 +118,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    RatingsWidget(ratings: 5)
+                                    RatingsWidget(ratings: avgRating)
                                   ],
                                 ),
                                 Text(

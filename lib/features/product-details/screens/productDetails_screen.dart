@@ -3,6 +3,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:expressmart/common/widgets/customButton.dart';
 import 'package:expressmart/common/widgets/ratings.dart';
 import 'package:expressmart/features/home/widgets/carouselslider.dart';
+import 'package:expressmart/services/product_details_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +22,31 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  final productDetailsServices = ProductDetailsServices();
+  double avgRating = 0;
+  double myRating = 0;
   int imageIndex = 0;
   final _scrollcontroller = ScrollController();
+  void fetchRating() {
+    double totalRating = 0;
+    for (int i = 0; i < widget.product.ratings!.length; i++) {
+      totalRating = widget.product.ratings![i].rating;
+      if (widget.product.ratings![i].userId ==
+          Provider.of<UserProvider>(context, listen: false).user.id) {
+        myRating = widget.product.ratings![i].rating;
+      }
+    }
+    if (totalRating != 0) {
+      avgRating = totalRating / widget.product.ratings!.length;
+    }
+  }
+
+  @override
+  void initState() {
+    fetchRating();
+    super.initState();
+  }
+
   @override
   void dispose() {
     _scrollcontroller.dispose();
@@ -58,7 +82,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 children: [
                   TextButton(onPressed: () {}, child: Text('Seller : nmos')),
                   GestureDetector(
-                      child: RatingsWidget(ratings: 5),
+                      child: RatingsWidget(ratings: avgRating),
                       onTap: () {
                         _scrollcontroller.animateTo(pageBottom,
                             duration: Duration(seconds: 1),
@@ -190,10 +214,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         Icons.star,
                         color: Colors.yellow,
                       ),
+                  initialRating: myRating,
                   itemCount: 5,
                   minRating: 1,
                   allowHalfRating: true,
-                  onRatingUpdate: (rating) {})
+                  onRatingUpdate: (rating) {
+                    productDetailsServices.rateProduct(
+                        context: context,
+                        product: widget.product,
+                        rating: rating);
+                    setState(() {});
+                  })
             ],
           ),
         ),
