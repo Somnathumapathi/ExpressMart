@@ -176,7 +176,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 children: [
                   // CustomButton(text: 'Add to cart', onTap: () {}),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      productDetailsServices.addToCart(
+                          context, widget.product.id!);
+                    },
                     child: Text('Add to cart'),
                     style: ElevatedButton.styleFrom(),
                   ),

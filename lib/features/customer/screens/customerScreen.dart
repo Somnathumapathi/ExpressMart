@@ -1,7 +1,9 @@
 import 'package:expressmart/features/cart/screens/cartScreen.dart';
 import 'package:expressmart/features/home/screens/home_screen.dart';
+import 'package:expressmart/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
 
 import '../../account/screens/accountScreen.dart';
 
@@ -18,6 +20,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.watch<UserProvider>();
     return Scaffold(
       body: screens[_screenIdx],
       bottomNavigationBar: BottomNavigationBar(
@@ -28,7 +31,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               icon: Container(
                 decoration: BoxDecoration(),
                 child: badges.Badge(
-                  badgeContent: Text('0'),
+                  badgeContent: Text(userProvider.user.cart.length.toString()),
                   child: Icon(Icons.shopping_cart),
                 ),
               ),
