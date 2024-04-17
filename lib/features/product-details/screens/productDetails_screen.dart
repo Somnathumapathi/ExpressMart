@@ -26,6 +26,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   double avgRating = 0;
   double myRating = 0;
   int imageIndex = 0;
+
   final _scrollcontroller = ScrollController();
   void fetchRating() {
     double totalRating = 0;
@@ -38,6 +39,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
     if (totalRating != 0) {
       avgRating = totalRating / widget.product.ratings!.length;
+    }
+  }
+
+  bool isInStock() {
+    if (widget.product.quantity > 0) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -57,6 +66,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     final pageBottom = MediaQuery.of(context).size.height - 10;
     final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -171,22 +181,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   )
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // CustomButton(text: 'Add to cart', onTap: () {}),
-                  ElevatedButton(
-                    onPressed: () {
-                      productDetailsServices.addToCart(
-                          context, widget.product.id!);
-                    },
-                    child: Text('Add to cart'),
-                    style: ElevatedButton.styleFrom(),
-                  ),
-                  ElevatedButton(onPressed: () {}, child: Text('Buy now'))
-                ],
-              ),
+              isInStock()
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // CustomButton(text: 'Add to cart', onTap: () {}),
+                        ElevatedButton(
+                          onPressed: () {
+                            productDetailsServices.addToCart(
+                                context, widget.product.id!);
+                          },
+                          child: Text('Add to cart'),
+                          style: ElevatedButton.styleFrom(),
+                        ),
+                        ElevatedButton(onPressed: () {}, child: Text('Buy now'))
+                      ],
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          'Out of Stock',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
               Container(
+                width: double.infinity,
                 decoration:
                     BoxDecoration(color: Color.fromARGB(255, 57, 56, 56)),
                 child: Column(
