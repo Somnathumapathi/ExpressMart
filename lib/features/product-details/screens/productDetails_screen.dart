@@ -3,6 +3,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:expressmart/common/widgets/customButton.dart';
 import 'package:expressmart/common/widgets/ratings.dart';
 import 'package:expressmart/features/home/widgets/carouselslider.dart';
+import 'package:expressmart/services/cart_services.dart';
 import 'package:expressmart/services/product_details_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -23,6 +24,7 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final productDetailsServices = ProductDetailsServices();
+  final cartServices = CartServices();
   double avgRating = 0;
   double myRating = 0;
   int imageIndex = 0;
@@ -188,8 +190,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         // CustomButton(text: 'Add to cart', onTap: () {}),
                         ElevatedButton(
                           onPressed: () {
-                            productDetailsServices.addToCart(
-                                context, widget.product.id!);
+                            cartServices.addToCart(context, widget.product.id!);
                           },
                           child: Text('Add to cart'),
                           style: ElevatedButton.styleFrom(),

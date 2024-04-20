@@ -1,10 +1,12 @@
 import 'package:expressmart/common/widgets/customButton.dart';
 import 'package:expressmart/features/home/widgets/addressbox.dart';
 import 'package:expressmart/features/cart/widgets/cartProduct_widget.dart';
+import 'package:expressmart/services/product_details_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/global_variables.dart';
+import '../../../models/product.dart';
 import '../../../provider/user_provider.dart';
 import '../../../services/home_services.dart';
 import '../../home/screens/search_screen.dart';
@@ -20,6 +22,7 @@ class _CartScreenState extends State<CartScreen> {
   final _searchController = TextEditingController();
   final homeservices = HomeServices();
   List<String> searchSuggestions = [];
+
   _fetchSearchSuggestions(String ch) async {
     searchSuggestions = await homeservices.fetchSearchSuggestions(context, ch);
     setState(() {});
@@ -29,11 +32,20 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
     double subTotal = 0;
-
+    double freedelamt = 500;
     userProvider.user.cart
         .map((e) => subTotal +=
             (e['quantity'] * e['product']['price'] as int).toDouble())
         .toList();
+
+    bool isEligibleFreeDel() {
+      if (subTotal >= 500)
+        return true;
+      else if (subTotal < 500)
+        return false;
+      else
+        throw Exception('Not valid value');
+    }
 
     return Scaffold(
         appBar: PreferredSize(
@@ -78,75 +90,96 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-            child: searchSuggestions.isNotEmpty &&
-                    _searchController.text.isNotEmpty
-                ? Container(
-                    height: 250,
+        body: searchSuggestions.isNotEmpty && _searchController.text.isNotEmpty
+            ? Container(
+                height: 250,
+                child: Expanded(
+                  child: ListView.builder(
+                      // physics: ScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: searchSuggestions.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: InkWell(
+                            child: Text(searchSuggestions[index]),
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, SearchScreen.routeName,
+                                  arguments: searchSuggestions[index]);
+                            },
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.arrow_outward),
+                            onPressed: () {
+                              _searchController.text = searchSuggestions[index];
+                              _fetchSearchSuggestions(_searchController.text);
+                            },
+                          ),
+                        );
+                      }),
+                ),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AddressBox(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: RichText(
+                        text: TextSpan(
+                            text: 'SubTotal: ₹',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 18),
+                            children: [
+                          TextSpan(
+                              text: subTotal.toString(),
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 20,
+                                  color: GlobalVariables.secondaryColor))
+                        ])),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.crisis_alert,
+                          color: isEligibleFreeDel()
+                              ? GlobalVariables.primaryColor
+                              : GlobalVariables.secondaryColor,
+                        ),
+                        isEligibleFreeDel()
+                            ? Text('Your order is eligible for free shipping')
+                            : Text(
+                                'Add items worth ₹${freedelamt - subTotal} for free delivery')
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomButton(
+                      text: 'Place order',
+                      onTap: () {},
+                      color: GlobalVariables.secondaryColor,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
                     child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: searchSuggestions.length,
+                        itemCount: userProvider.user.cart.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: InkWell(
-                              child: Text(searchSuggestions[index]),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, SearchScreen.routeName,
-                                    arguments: searchSuggestions[index]);
-                              },
-                            ),
-                            trailing: IconButton(
-                              icon: Icon(Icons.arrow_outward),
-                              onPressed: () {
-                                _searchController.text =
-                                    searchSuggestions[index];
-                                _fetchSearchSuggestions(_searchController.text);
-                              },
-                            ),
-                          );
+                          return CartProduct(index: index);
                         }),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AddressBox(),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: RichText(
-                            text: TextSpan(
-                                text: 'SubTotal: \$',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 18),
-                                children: [
-                              TextSpan(
-                                  text: subTotal.toString(),
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontSize: 20,
-                                      color: GlobalVariables.secondaryColor))
-                            ])),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CustomButton(
-                          text: 'Place order',
-                          onTap: () {},
-                          color: GlobalVariables.secondaryColor,
-                        ),
-                      ),
-                      ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: userProvider.user.cart.length,
-                          itemBuilder: (context, index) {
-                            return CartProduct(index: index);
-                          }),
-                    ],
-                  )
-//       body:
-            ));
+                  ),
+                ],
+              ));
   }
 }

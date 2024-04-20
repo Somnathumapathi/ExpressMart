@@ -1,9 +1,13 @@
+import 'package:expressmart/common/widgets/ratings.dart';
 import 'package:expressmart/constants/global_variables.dart';
 import 'package:expressmart/models/product.dart';
 import 'package:expressmart/provider/user_provider.dart';
+import 'package:expressmart/services/cart_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
+import '../../../services/product_details_services.dart';
 
 class CartProduct extends StatefulWidget {
   const CartProduct({super.key, required this.index});
@@ -14,12 +18,23 @@ class CartProduct extends StatefulWidget {
 }
 
 class _CartProductState extends State<CartProduct> {
+  final productDetailsServices = ProductDetailsServices();
+  final cartServices = CartServices();
+  void incQuantity(String id) {
+    cartServices.addToCart(context, id);
+  }
+
+  void decQuantity(String id) {
+    cartServices.removeFromCart(context, id);
+  }
+
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<UserProvider>().user.cart[widget.index];
     final cartProduct = Product.fromMap(cart['product']);
     final quantity = cart['quantity'];
     final isEligible = cartProduct.price >= 500 ? true : false;
+    // double avgRating = 0;
     bool isInStock() {
       if (cartProduct.quantity > 0) {
         return true;
@@ -27,6 +42,16 @@ class _CartProductState extends State<CartProduct> {
         return false;
       }
     }
+
+    //    void fetchRating() {
+    //   double totalRating = 0;
+    //   for (int i = 0; i < cartProduct.ratings!.length; i++) {
+    //     totalRating = cartProduct.ratings![i].rating;
+    //   }
+    //   if (totalRating != 0) {
+    //     avgRating = totalRating / cartProduct.ratings!.length;
+    //   }
+    // }
 
     return Column(
       children: [
@@ -59,7 +84,7 @@ class _CartProductState extends State<CartProduct> {
                     width: 200,
                     padding: const EdgeInsets.only(left: 10, top: 5),
                     child: Text(
-                      '\$${cartProduct.price}',
+                      '₹${cartProduct.price}',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -78,6 +103,7 @@ class _CartProductState extends State<CartProduct> {
                         : Text('Delivery charges are applicable',
                             style: TextStyle(color: Colors.yellow)),
                   ),
+                  // RatingsWidget(ratings: ),
                   Container(
                     width: 200,
                     padding: const EdgeInsets.only(left: 10, top: 5),
@@ -117,7 +143,9 @@ class _CartProductState extends State<CartProduct> {
                 child: Row(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        decQuantity(cartProduct.id!);
+                      },
                       child: Container(
                         width: 35,
                         height: 32,
@@ -144,7 +172,9 @@ class _CartProductState extends State<CartProduct> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        incQuantity(cartProduct.id!);
+                      },
                       child: Container(
                         width: 35,
                         height: 32,
